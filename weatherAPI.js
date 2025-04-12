@@ -4,7 +4,7 @@
 
 // dotenv.config();
 
-export const getWeatherInfoByCityName = async (city = "") => {
+export const getWeatherInfoByCityName = async ({ city }) => {
 	if (!city || city.trim() === "")
 		return {
 			success: false,
