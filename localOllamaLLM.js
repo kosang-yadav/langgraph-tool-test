@@ -25,6 +25,32 @@ const aiMsg = await llm.invoke([
 	{ role: "human", content: userPrompt },
 ]);
 
+// a normal function to format LLM's messages
+function formatLLMMessage(message) {
+	const lines = message.split("\n");
+	let formatted = "";
+
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i];
+
+		// Heading line
+		if (/^\d\.\s\*\*(.*?)\*\*:?\s*(.*)/.test(line)) {
+			const match = line.match(/^\d\.\s\*\*(.*?)\*\*:?\s*(.*)/);
+			if (match) {
+				const title = match[1];
+				const desc = match[2];
+				formatted += `\n\n${title.toUpperCase()}:\n${desc}`;
+			}
+		}
+		// First paragraph or other notes
+		else {
+			formatted += `\n${line}`;
+		}
+	}
+
+	return formatted.trim();
+}
+
 // outputs
 // console.log({ aiMsg });
-console.log({ content: aiMsg.content });
+console.log({ content: formatLLMMessage(aiMsg.content) });
